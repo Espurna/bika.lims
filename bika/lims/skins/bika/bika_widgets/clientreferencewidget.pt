@@ -46,7 +46,7 @@
                 </tal:repeat>
           </div>
           <!-- Province filter -->
-          <select
+          <select class="province_filter"
             tal:define="provinces python:widget.provinces_voc()">
             <tal:options repeat="option provinces">
               <option
@@ -54,6 +54,11 @@
                 tal:content="python:option[2]">
               </option>
             </tal:options>
+          </select>
+
+          <!-- District filter -->
+          <select class="district_filter" hidden="true">
+            <option value="Null"></option>
           </select>
 
           <input
