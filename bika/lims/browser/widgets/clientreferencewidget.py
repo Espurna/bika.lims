@@ -3,24 +3,15 @@
 # Copyright 2011-2016 by it's authors.
 # Some rights reserved. See LICENSE.txt, AUTHORS.txt.
 
+import json
 from AccessControl import ClassSecurityInfo
-from bika.lims import bikaMessageFactory as _
-from bika.lims.utils import t
-from bika.lims.browser import BrowserView
-from bika.lims.interfaces import IReferenceWidgetVocabulary
-from bika.lims.permissions import *
-from bika.lims.utils import to_unicode as _u
-from bika.lims.utils import to_utf8 as _c
-from bika.lims import logger
-from Acquisition import aq_base
-from types import DictType
-from operator import itemgetter
+
 from Products.Archetypes.Registry import registerWidget
 from Products.Archetypes.Widget import StringWidget
-from Products.CMFCore.utils import getToolByName
-from zope.component import getAdapters
-import json
-import plone
+
+from bika.lims import bikaMessageFactory as _
+from bika.lims.locales import COUNTRIES, STATES, DISTRICTS
+
 
 class ClientReferenceWidget(StringWidget):
     _properties = StringWidget._properties.copy()
@@ -177,5 +168,31 @@ class ClientReferenceWidget(StringWidget):
                 'width': '70%',
                 'noform': 'close',}))
             }
+
+    def provinces_voc(self):
+        """
+        Returns a vocabulary with provinces
+        """
+        country = 'Zimbabwe'
+        items = []
+        if not country:
+            return items
+        # get ISO code for country
+        iso = [c for c in COUNTRIES if
+               c['Country'] == country or c['ISO'] == country]
+        if not iso:
+            return items
+        iso = iso[0]['ISO']
+        items = [x for x in STATES if x[0] == iso]
+        items.sort(lambda x, y: cmp(x[2], y[2]))
+        return items
+
+    def districts_voc(self, state):
+        """
+        Returns a vocabulary with provinces
+        """
+        items = []
+        return items
+
 
 registerWidget(ClientReferenceWidget, title='Reference Widget')
