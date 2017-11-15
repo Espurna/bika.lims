@@ -47,6 +47,7 @@ from bika.lims.browser.fields import ProxyField
 from bika.lims.browser.widgets import DateTimeWidget, DecimalWidget
 from bika.lims.browser.widgets import PrioritySelectionWidget
 from bika.lims.browser.widgets import ReferenceWidget
+from bika.lims.browser.widgets import ClientReferenceWidget
 from bika.lims.browser.widgets import RejectionWidget
 from bika.lims.browser.widgets import SelectionWidget
 from bika.lims.browser.widgets import SelectionWidget as BikaSelectionWidget
@@ -216,7 +217,7 @@ schema = BikaSchema.copy() + Schema((
         mode="rw",
         read_permission=permissions.View,
         write_permission=permissions.ModifyPortalContent,
-        widget=ReferenceWidget(
+        widget=ClientReferenceWidget(
             label=_("Client"),
             description=_("The assigned client of this request"),
             size=20,
