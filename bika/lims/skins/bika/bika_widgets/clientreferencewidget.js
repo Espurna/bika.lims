@@ -34,6 +34,11 @@
     check_missing_UID();
     load_addbutton_overlays();
     load_editbutton_overlays();
+    $(".ArchetypesClientReferenceWidget")
+        .find(".province_filter")
+        .bind("change", function () {
+            provinces_controller(this);
+        });
   });
 
 }(jQuery));
@@ -368,4 +373,20 @@ function load_editbutton_overlays() {
 
     load_editbutton_overlay(button);
   });
+}
+
+function provinces_controller(itself) {
+    /* Controller function for province selector.
+    Once a province is selected, districts selector should be updated.
+    */
+    // Update provinces options
+    var province = $(itself).find(":selected").val();
+    update_districts(itself, province);
+}
+
+function update_districts(widget, province) {
+    /*
+    This function updates district option depending on province
+    */
+    var province_element = $(this);
 }
