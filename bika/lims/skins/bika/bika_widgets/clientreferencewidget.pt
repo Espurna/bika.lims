@@ -50,7 +50,7 @@
             tal:define="provinces python:widget.provinces_voc()">
             <tal:options repeat="option provinces">
               <option
-                tal:attributes="value python:option[1]"
+                tal:attributes="value python:option[2]"
                 tal:content="python:option[2]">
               </option>
             </tal:options>
