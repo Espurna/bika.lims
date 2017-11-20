@@ -39,6 +39,11 @@
         .bind("change", function () {
             provinces_controller(this);
         });
+    $(".ArchetypesClientReferenceWidget")
+        .find(".district_filter")
+        .bind("change", function () {
+            districts_controller(this);
+        });
   });
 
 }(jQuery));
@@ -381,6 +386,17 @@ function provinces_controller(itself) {
     */
     // Update provinces options
     var province = $(itself).find(":selected").val();
+    // Update ajax search_query attribute for client input
+    var search_input = $(itself)
+        .closest('.ArchetypesClientReferenceWidget')
+        .find('.referencewidget');
+    var search_query = jQuery.parseJSON($(search_input).attr('search_query'));
+    search_query.getProvince = province;
+    search_query = JSON.stringify(search_query);
+    $(search_input).attr('search_query', search_query);
+    // Delete current selected client
+    clean_client_selection(search_input);
+    // Update district selection
     update_districts(itself, province);
 }
 
@@ -388,5 +404,24 @@ function update_districts(widget, province) {
     /*
     This function updates district option depending on province
     */
+    // AJAX call to get districts for province.
+
+    // Fill district options
     var province_element = $(this);
+
+}
+
+function districts_controller(itself) {
+    /* Controller function for province selector.
+    Once a province is selected, districts selector should be updated.
+    */
+
+    // Update query and blank current selection
+}
+
+function clean_client_selection(client_input){
+    /*
+    Removes selected client data
+    */
+    $(client_input).val('').trigger('change');
 }
