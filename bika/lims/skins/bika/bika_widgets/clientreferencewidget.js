@@ -423,7 +423,24 @@ function districts_controller(itself) {
     Once a province is selected, districts selector should be updated.
     */
 
-    // Update query and blank current selection
+    // Update provinces options
+    var district = $(itself).find(":selected").val();
+
+    // Update ajax search_query attribute for client input
+    var search_input = $(itself)
+        .closest('.ArchetypesClientReferenceWidget')
+        .find('.referencewidget');
+
+    // Delete current selected client
+    clean_client_selection(search_input);
+
+    // Update combogrid options
+    var element = search_input;
+    var filterkey = 'getDistrict';
+    var filtervalue = district;
+    var querytype = 'search_query';
+    window.bika.lims.update_combogrid_query(
+        element, filterkey, filtervalue, querytype);
 }
 
 function clean_client_selection(client_input){
