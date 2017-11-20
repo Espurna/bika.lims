@@ -386,16 +386,23 @@ function provinces_controller(itself) {
     */
     // Update provinces options
     var province = $(itself).find(":selected").val();
+
     // Update ajax search_query attribute for client input
     var search_input = $(itself)
         .closest('.ArchetypesClientReferenceWidget')
         .find('.referencewidget');
-    var search_query = jQuery.parseJSON($(search_input).attr('search_query'));
-    search_query.getProvince = province;
-    search_query = JSON.stringify(search_query);
-    $(search_input).attr('search_query', search_query);
+
     // Delete current selected client
     clean_client_selection(search_input);
+
+    // Update combogrid options
+    var element = search_input;
+    var filterkey = 'getProvince';
+    var filtervalue = province;
+    var querytype = 'search_query';
+    window.bika.lims.update_combogrid_query(
+        element, filterkey, filtervalue, querytype);
+
     // Update district selection
     update_districts(itself, province);
 }
