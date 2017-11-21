@@ -380,10 +380,15 @@ function load_editbutton_overlays() {
   });
 }
 
+/**
+ * Controller function for province selector.
+ * Once a province is selected, districts selector and combogrid input should
+ * be updated.
+ *
+ * @param {object} itself - the selector element provinces.
+ */
 function provinces_controller(itself) {
-    /* Controller function for province selector.
-    Once a province is selected, districts selector should be updated.
-    */
+
     var widget = $(itself).closest('.ArchetypesClientReferenceWidget');
 
     // Update provinces options
@@ -407,10 +412,14 @@ function provinces_controller(itself) {
     update_districts(widget, province);
 }
 
+/**
+ * This function updates district options depending on the given province.
+ *
+ * @param {object} widget - the whole widget where actions are taking place.
+ * @param {string} province - the selected province value.
+ */
 function update_districts(widget, province) {
-    /*
-    This function updates district option depending on province
-    */
+
     var new_element = '';
     var msg = '';
     var options = [];
@@ -451,6 +460,12 @@ function update_districts(widget, province) {
     });
 }
 
+/**
+ * Controller function for district selector.
+ * Once a district is selected, combogrid input should be updated.
+ *
+ * @param {object} itself - the selector element district.
+ */
 function districts_controller(itself) {
     /* Controller function for province selector.
     Once a province is selected, districts selector should be updated.
@@ -476,9 +491,11 @@ function districts_controller(itself) {
         element, filterkey, filtervalue, querytype);
 }
 
+/**
+ * Removes selected client data
+ *
+ * @param {object} client_input - the client combogrid input element.
+ */
 function clean_client_selection(client_input){
-    /*
-    Removes selected client data
-    */
     $(client_input).val('').trigger('change');
 }
