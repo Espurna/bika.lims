@@ -438,13 +438,14 @@ function update_districts(widget, province) {
     });
 
     request.done(function( data ) {
-        // Crate list options
+        // Create list options
         $.each(data, function(i, v) {
            options.push(
                 '<option value=\'' + v[2] + '\'>' + v[2] + '</option>');
         });
         //Removing old options and adding new ones into selector
         options = options.sort();
+        options.unshift('<option></option>');
         $(district_selector)
             .find('option')
             .remove()

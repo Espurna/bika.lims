@@ -48,6 +48,7 @@
           <!-- Province filter -->
           <select class="province_filter"
             tal:define="provinces python:widget.provinces_voc()">
+            <option></option>
             <tal:options repeat="option provinces">
               <option
                 tal:attributes="value python:option[2]"
