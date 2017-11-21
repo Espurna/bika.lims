@@ -21,6 +21,15 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
+    <!-- AJAX call to obtain districts voc -->
+    <browser:page
+      for="*"
+      name="clientreferencewidget_districts_voc"
+      class="bika.lims.browser.widgets.clientreferencewidget.AJAXDistrictsVoc"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
     <browser:page
       for="*"
       name="analysis_spec_widget_view"

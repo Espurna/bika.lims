@@ -384,13 +384,13 @@ function provinces_controller(itself) {
     /* Controller function for province selector.
     Once a province is selected, districts selector should be updated.
     */
+    var widget = $(itself).closest('.ArchetypesClientReferenceWidget');
+
     // Update provinces options
     var province = $(itself).find(":selected").val();
 
     // Update ajax search_query attribute for client input
-    var search_input = $(itself)
-        .closest('.ArchetypesClientReferenceWidget')
-        .find('.referencewidget');
+    var search_input = widget.find('.referencewidget');
 
     // Delete current selected client
     clean_client_selection(search_input);
@@ -404,18 +404,51 @@ function provinces_controller(itself) {
         element, filterkey, filtervalue, querytype);
 
     // Update district selection
-    update_districts(itself, province);
+    update_districts(widget, province);
 }
 
 function update_districts(widget, province) {
     /*
     This function updates district option depending on province
     */
+    var new_element = '';
+    var msg = '';
+    var options = [];
+    var authenticator = $('input[name="_authenticator"]').val();
+    // Show selector
+    district_selector = $(widget).find('.district_filter');
+    district_selector.show();
     // AJAX call to get districts for province.
+    var request = $.ajax({
+      url: window.portal_url + "/clientreferencewidget_districts_voc",
+      method: "POST",
+      data: {
+        'province' : province,
+        '_authenticator': authenticator},
+      dataType: "json"
+    });
 
-    // Fill district options
-    var province_element = $(this);
+    request.done(function( data ) {
+        // Crate list options
+        $.each(data, function(i, v) {
+           options.push(
+                '<option value=\'' + v[2] + '\'>' + v[2] + '</option>');
+        });
+        //Removing old options and adding new ones into selector
+        options = options.sort();
+        $(district_selector)
+            .find('option')
+            .remove()
+            .end()
+            .append(options.join(''));
+    });
 
+    request.fail(function( jqXHR, textStatus ) {
+      msg = "Request to get districts failed: " +
+        jqXHR.status + " "  + jqXHR.statusText;
+      console.log(msg);
+      window.bika.lims.warn(msg);
+    });
 }
 
 function districts_controller(itself) {

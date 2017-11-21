@@ -5,7 +5,8 @@
 
 import json
 from AccessControl import ClassSecurityInfo
-
+from bika.lims.browser import BrowserView
+import plone
 from Products.Archetypes.Registry import registerWidget
 from Products.Archetypes.Widget import StringWidget
 
@@ -187,12 +188,33 @@ class ClientReferenceWidget(StringWidget):
         items.sort(lambda x, y: cmp(x[2], y[2]))
         return items
 
-    def districts_voc(self, state):
-        """
-        Returns a vocabulary with provinces
-        """
+
+class AJAXDistrictsVoc(BrowserView):
+    """
+    Returns a vocabulary with provinces
+    """
+
+    def __call__(self):
+        plone.protect.CheckAuthenticator(self.request)
+        province = self.request.get('province', None)
         items = []
-        return items
+        if province is None:
+            return json.dumps(items)
+        country = 'Zimbabwe'
+        # get ISO code for country
+        iso = [c for c in COUNTRIES if
+               c['Country'] == country or c['ISO'] == country]
+        if not iso:
+            return json.dumps(items)
+        iso = iso[0]['ISO']
+        # get NUMBER of the state for lookup
+        snr = [s for s in STATES if s[0] == iso and s[2] == province]
+        if not snr:
+            return json.dumps(items)
+        snr = snr[0][1]
+        items = [x for x in DISTRICTS if x[0] == iso and x[1] == snr]
+        items.sort(lambda x, y: cmp(x[1], y[1]))
+        return json.dumps(items)
 
 
 registerWidget(ClientReferenceWidget, title='Reference Widget')
